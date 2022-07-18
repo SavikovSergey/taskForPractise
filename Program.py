@@ -1,10 +1,15 @@
 import datetime
-from datetime import datetime
+from datetime import datetime, timedelta
+from datetime import date
 
 now = datetime.now()
 current_hour = now.strftime("%H")
 current_minute = now.strftime("%M")
 current_datetime = datetime.now()
+current_year = now.strftime("%Y")
+current_month = now.strftime("%B")
+current_day = now.strftime("%a")
+current_HandM = now.strftime("%H,%M")
 
 class Data:
     __month__ = ["января", "февраля", "марта",  "апреля", "мая",  "июня",  "июля",  "августа", "сентября",
@@ -56,6 +61,7 @@ def Text(str):
     __week__ = ["понедельник", "вторник", "среду", "четверг", "пятницу", "субботу", "воскресенье"]
     __Time__ = [":"]
     __year__ = ["году"]
+    __day__ = ["завтра", "послезавтра"]
 
     for i in __week__:
         if i in str:
@@ -71,45 +77,31 @@ def Text(str):
     for i in __year__:
         if i in str:
             return str[:str.find(i) - 8]
+    for i in __day__:
+        if i in str:
+            return str[:str.find(i) - 1]
     else:
+        MESSAGE['DATE']['day_of_week'] = current_datetime.weekday() + 1
+        if current_datetime.weekday() + 1 == 1:
+            MESSAGE['DATE']['day_of_week'] = "Понедельник"
+        elif current_datetime.weekday() + 1 == 2:
+            MESSAGE['DATE']['day_of_week'] = "Вторник"
+        elif current_datetime.weekday() + 1 == 3:
+            MESSAGE['DATE']['day_of_week'] = "Среда"
+        elif current_datetime.weekday() + 1 == 4:
+            MESSAGE['DATE']['day_of_week'] = "Четверг"
+        elif current_datetime.weekday() + 1 == 5:
+            MESSAGE['DATE']['day_of_week'] = "Пятница"
+        elif current_datetime.weekday() + 1 == 6:
+            MESSAGE['DATE']['day_of_week'] = "Суббота"
+        elif current_datetime.weekday() + 1 == 7:
+            MESSAGE['DATE']['day_of_week'] = "Воскресенье"
         return str[:]
 
 try:
     string = input()
-    MESSAGE = {'STATUS': None,'TEXT': None, 'DATE': {'year': None, 'month': None, 'day': None, 'day_of_week': None,
-                                                     'hour': None, 'minute': None}}
-    if "января" not in string:
-        if "февраля" not in string:
-            if "марта" not in string:
-                if "апреля" not in string:
-                    if "мая" not in string:
-                        if "июня" not in string:
-                            if "июля" not in string:
-                                if "августа" not in string:
-                                    if "сентября" not in string:
-                                        if "октября" not in string:
-                                                if "декабря" not in string:
-                                                    if "года" not in string:
-                                                        if "году" not in string:
-                                                            if "вторник" not in string or "среду" not in string or "четверг" not in string \
-                                                                    or "понедельник" not in string or "пятницу" not in string \
-                                                                    or "субботу" not in string or "воскресенье" not in string:
-                                                                MESSAGE['DATE'][
-                                                                    'day_of_week'] = current_datetime.weekday() + 1
-                                                                if current_datetime.weekday() + 1 == 1:
-                                                                    MESSAGE['DATE']['day_of_week'] = "Понедельник"
-                                                                elif current_datetime.weekday() + 1 == 2:
-                                                                    MESSAGE['DATE']['day_of_week'] = "Вторник"
-                                                                elif current_datetime.weekday() + 1 == 3:
-                                                                    MESSAGE['DATE']['day_of_week'] = "Среда"
-                                                                elif current_datetime.weekday() + 1 == 4:
-                                                                    MESSAGE['DATE']['day_of_week'] = "Четверг"
-                                                                elif current_datetime.weekday() + 1 == 5:
-                                                                    MESSAGE['DATE']['day_of_week'] = "Пятница"
-                                                                elif current_datetime.weekday() + 1 == 6:
-                                                                    MESSAGE['DATE']['day_of_week'] = "Суббота"
-                                                                elif current_datetime.weekday() + 1 == 7:
-                                                                    MESSAGE['DATE']['day_of_week'] = "Воскресенье"
+    MESSAGE = {'STATUS': None,'TEXT': None, 'DATE': {'year': None, 'month': None, 'day': None}}
+                                                     #'hour': None, 'minute': None}}
 
     if "понедельник" in string:
         MESSAGE['DATE']['day_of_week'] = "Понедельник"
@@ -137,11 +129,57 @@ try:
         MESSAGE['DATE']['month'] = Data.month(string)
         MESSAGE['DATE']['day'] = Data.day(string)
         Data.time(string)
+
+    if "завтра" in string:
+        MESSAGE['DATE']['day_of_week'] = current_datetime.weekday() + 1
+        if current_datetime.weekday() + 1 == 1:
+            MESSAGE['DATE']['day_of_week'] = "Вторник"
+        elif current_datetime.weekday() + 1 == 2:
+            MESSAGE['DATE']['day_of_week'] = "Среда"
+        elif current_datetime.weekday() + 1 == 3:
+            MESSAGE['DATE']['day_of_week'] = "Четверг"
+        elif current_datetime.weekday() + 1 == 4:
+            MESSAGE['DATE']['day_of_week'] = "Пятница"
+        elif current_datetime.weekday() + 1 == 5:
+            MESSAGE['DATE']['day_of_week'] = "Суббота"
+        elif current_datetime.weekday() + 1 == 6:
+            MESSAGE['DATE']['day_of_week'] = "Воскресенье"
+        else:
+            MESSAGE['DATE']['day_of_week'] = "Понедельник"
+    if "послезавтра" in string:
+        MESSAGE['DATE']['day_of_week'] = current_datetime.weekday() + 1
+        if current_datetime.weekday() + 1 == 1:
+            MESSAGE['DATE']['day_of_week'] = "Cреда"
+        elif current_datetime.weekday() + 1 == 2:
+            MESSAGE['DATE']['day_of_week'] = "Четверг"
+        elif current_datetime.weekday() + 1 == 3:
+            MESSAGE['DATE']['day_of_week'] = "Пятница"
+        elif current_datetime.weekday() + 1 == 4:
+            MESSAGE['DATE']['day_of_week'] = "Суббота"
+        elif current_datetime.weekday() + 1 == 5:
+            MESSAGE['DATE']['day_of_week'] = "Воскресенье"
+        elif current_datetime.weekday() + 1 == 6:
+            MESSAGE['DATE']['day_of_week'] = "Понедельник"
+        else:
+            MESSAGE['DATE']['day_of_week'] = "Вторник"
+
     MESSAGE['TEXT'] = Text(string)
     MESSAGE['STATUS'] = 'SUCCESS'
     MESSAGE['DATE']['year'] = Data.year(string)
     MESSAGE['DATE']['month'] = Data.month(string)
     MESSAGE['DATE']['day'] = Data.day(string)
+    if "послезавтра" in string:
+        now += timedelta(days=2)
+        MESSAGE['DATE']['day'] = now.strftime("%d")
+    elif "завтра" in string:
+        now += timedelta(days=1)
+        MESSAGE['DATE']['day'] = now.strftime("%d")
+    if not MESSAGE['DATE']['year']:
+        MESSAGE['DATE']['year'] = datetime.now().year
+    if not MESSAGE['DATE']['month']:
+        MESSAGE['DATE']['month'] = datetime.now().month
+    if not MESSAGE['DATE']['day']:
+        MESSAGE['DATE']['day'] = datetime.now().day
     print(MESSAGE)
 except Exception as e:
     MESSAGE['STATUS'] = 'ERROR'
