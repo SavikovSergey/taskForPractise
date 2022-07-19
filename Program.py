@@ -152,6 +152,16 @@ def timeforthrough(argnow):
     MESSAGE['DATE']['day'] = argnow.day
     MESSAGE['DATE']['hour'] = argnow.hour
     MESSAGE['DATE']['minute'] = argnow.minute
+
+def verifier_time():
+    global MESSAGE
+    Enter_time = datetime(int(MESSAGE['DATE']['year']),int(MESSAGE['DATE']['month']),int(MESSAGE['DATE']['day']),int(MESSAGE['DATE']['hour']),int(MESSAGE['DATE']['minute']))
+
+    if Enter_time >= datetime.now():
+        return True
+    else:
+        return False
+
 try:
     string = input()
     MESSAGE = {'STATUS': None,'TEXT': None, 'DATE': {'year': None, 'month': None, 'day': None}}
@@ -184,7 +194,7 @@ try:
         MESSAGE['DATE']['day'] = Data.day(string)
         Data.time(string)
 
-    if "завтра" in string:
+    if "завтра" or verifier_time() in string:
         MESSAGE['DATE']['day_of_week'] = current_datetime.weekday() + 1
         if current_datetime.weekday() + 1 == 1:
             MESSAGE['DATE']['day_of_week'] = "Вторник"
@@ -244,6 +254,8 @@ try:
         MESSAGE['DATE']['month'] = datetime.now().month
     if not MESSAGE['DATE']['day']:
         MESSAGE['DATE']['day'] = datetime.now().day
+    if not verifier_time():
+        MESSAGE['DATE']['day'] += 1
     print(MESSAGE)
 except Exception as e:
     MESSAGE['STATUS'] = 'ERROR'
