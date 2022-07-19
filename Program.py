@@ -62,6 +62,7 @@ def Text(str):
     __Time__ = [":"]
     __year__ = ["году"]
     __day__ = ["завтра", "послезавтра"]
+    __through__ = ["через"]
 
     for i in __week__:
         if i in str:
@@ -78,6 +79,9 @@ def Text(str):
         if i in str:
             return str[:str.find(i) - 8]
     for i in __day__:
+        if i in str:
+            return str[:str.find(i) - 1]
+    for i in __through__:
         if i in str:
             return str[:str.find(i) - 1]
     else:
@@ -98,6 +102,56 @@ def Text(str):
             MESSAGE['DATE']['day_of_week'] = "Воскресенье"
         return str[:]
 
+def through(list):
+    global now
+    if len(list)==1:
+        if list[0] == "год":
+            now += timedelta(days=365)
+        elif list[0] == "месяц":
+            now += timedelta(days=31)
+        elif list[0] == "неделю":
+            now += timedelta(days=7)
+        elif list[0] == "день":
+            now += timedelta(days=1)
+        elif list[0] == "сутки":
+            now += timedelta(hours=24)
+        elif list[0] == "час":
+            now += timedelta(hours=1)
+        elif list[0] == "минуту":
+            now += timedelta(minutes=1)
+    elif list[1] == "года":
+        now += timedelta(days=int(list[0]) * 365)
+    elif list[1] == "лет":
+        now += timedelta(days=int(list[0]) * 365)
+    elif list[1] == "месяца":
+        now += timedelta(days=int(list[0]) * 31)
+    elif list[1] == "месяцев":
+        now += timedelta(days=int(list[0]) * 31)
+    elif list[1] == "недели":
+        now += timedelta(days=int(list[0]) * 7)
+    elif list[1] == "недель":
+        now += timedelta(days=int(list[0]) * 7)
+    elif list[1] == "дней":
+        now += timedelta(days=int(list[0]))
+    elif list[1] == "дня":
+        now += timedelta(days=int(list[0]))
+    elif list[1] == "суток":
+        now += timedelta(days=int(list[0]))
+    elif list[1] == "часов":
+        now += timedelta(hours=int(list[0]))
+    elif list[1] == "часа":
+        now += timedelta(hours=int(list[0]))
+    elif list[1] == "минут":
+        now += timedelta(minutes=int(list[0]))
+    elif list[1] == "минуты":
+        now += timedelta(minutes=int(list[0]))
+
+def timeforthrough(argnow):
+    MESSAGE['DATE']['year'] = argnow.year
+    MESSAGE['DATE']['month'] = argnow.month
+    MESSAGE['DATE']['day'] = argnow.day
+    MESSAGE['DATE']['hour'] = argnow.hour
+    MESSAGE['DATE']['minute'] = argnow.minute
 try:
     string = input()
     MESSAGE = {'STATUS': None,'TEXT': None, 'DATE': {'year': None, 'month': None, 'day': None}}
@@ -174,6 +228,16 @@ try:
     elif "завтра" in string:
         now += timedelta(days=1)
         MESSAGE['DATE']['day'] = now.strftime("%d")
+
+    if "через" in string:
+        str = string[string.rfind("через") + 6:]
+        list = str.split(" ")
+        now = datetime.now()
+        while list:
+            through(list[:2])
+            list.remove(list[0])
+        timeforthrough(now)
+
     if not MESSAGE['DATE']['year']:
         MESSAGE['DATE']['year'] = datetime.now().year
     if not MESSAGE['DATE']['month']:
