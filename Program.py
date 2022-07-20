@@ -232,8 +232,9 @@ try:
     MESSAGE['TEXT'] = Text(string)
     MESSAGE['STATUS'] = 'SUCCESS'
     MESSAGE['DATE']['year'] = year(string)
-    MESSAGE['DATE']['month'] = month(string)
-    MESSAGE['DATE']['day'] = day(string)
+    MESSAGE['DATE']['month']= month(string)
+    MESSAGE['DATE']['day']= day(string)
+
     if "послезавтра" in string:
         now += timedelta(days=2)
         MESSAGE['DATE']['day'] = now.strftime("%d")
