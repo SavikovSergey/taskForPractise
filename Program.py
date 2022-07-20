@@ -194,7 +194,7 @@ try:
         MESSAGE['DATE']['day'] = Data.day(string)
         Data.time(string)
 
-    if "завтра" or verifier_time() in string:
+    if "завтра"  in string:
         MESSAGE['DATE']['day_of_week'] = current_datetime.weekday() + 1
         if current_datetime.weekday() + 1 == 1:
             MESSAGE['DATE']['day_of_week'] = "Вторник"
