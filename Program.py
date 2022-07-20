@@ -11,64 +11,65 @@ current_month = now.strftime("%B")
 current_day = now.strftime("%a")
 current_HandM = now.strftime("%H,%M")
 
-class Data:
-    __month__ = ["января", "февраля", "марта",  "апреля", "мая",  "июня",  "июля",  "августа", "сентября",
-                 "октября",  "ноября",  "декабря",]
-    __week__ = ["понедельник", "вторник", "среду", "четверг", "пятницу", "субботу", "воскресенье"]
-    def year(str):
-        text = ["года", "году"]
-        for i in text:
-            if i in str:
-                return str[str.find(i) - 5:str.find(i)-1]
-        else:
-            return None
+month__ = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября",
+               "октября", "ноября", "декабря", ]
+week__ = ["понедельник", "вторник", "среду", "четверг", "пятницу", "субботу", "воскресенье"]
 
-    def month(str):
-        for i in Data.__month__:
-            if i in str:
-                return Data.__month__.index(i) + 1
-        else:
-            return None
-
-    def day(str):
-        for i in Data.__month__:
-            if i in str:
-                if str[str.find(i) -3].isdigit():
-                    return str[str.find(i) - 3 : str.find(i) - 1]
-                else:
-                    return str[str.find(i) - 2: str.find(i) - 1]
+def year(str):
+    text = ["года", "году"]
+    for i in text:
+        if i in str:
+            return str[str.find(i) - 5:str.find(i) - 1]
+    else:
         return None
-    def time(str):
-        global MESSAGE
-        if str.rfind(":") and str[str.rfind(":")-1].isdigit() and str[str.rfind(":")+1].isdigit():
-            time = str[str.rfind(":") - 2:str.rfind(':') + 3]
-            if time[0] == " ":
-                MESSAGE['DATE']['hour'] = time[1:2]
-                MESSAGE['DATE']['minute'] = time[3:]
-            else:
-                MESSAGE['DATE']['hour'] = time[:2]
-                MESSAGE['DATE']['minute'] = time[3:]
 
-        if ":" not in string:
-            global now
-            now = datetime.now()
-            MESSAGE['DATE']['hour'] = current_hour
-            MESSAGE['DATE']['minute'] = current_minute
+def month(str):
+    for i in month__:
+        if i in str:
+            return month__.index(i) + 1
+    else:
+        return None
+
+
+def day(str):
+    for i in month__:
+        if i in str:
+            if str[str.find(i) - 3].isdigit():
+                return str[str.find(i) - 3: str.find(i) - 1]
+            else:
+                return str[str.find(i) - 2: str.find(i) - 1]
+    return None
+
+
+def time(str):
+    global MESSAGE
+    if str.rfind(":") and str[str.rfind(":") - 1].isdigit() and str[str.rfind(":") + 1].isdigit():
+        time = str[str.rfind(":") - 2:str.rfind(':') + 3]
+        if time[0] == " ":
+            MESSAGE['DATE']['hour'] = time[1:2]
+            MESSAGE['DATE']['minute'] = time[3:]
+        else:
+            MESSAGE['DATE']['hour'] = time[:2]
+            MESSAGE['DATE']['minute'] = time[3:]
+
+    if ":" not in string:
+        global now
+        now = datetime.now()
+        MESSAGE['DATE']['hour'] = current_hour
+        MESSAGE['DATE']['minute'] = current_minute
+
 
 def Text(str):
-    __month__ = ["января", "февраля", "марта",  "апреля", "мая",  "июня",  "июля",  "августа", "сентября",
-                 "октября",  "ноября",  "декабря"]
-    __week__ = ["понедельник", "вторник", "среду", "четверг", "пятницу", "субботу", "воскресенье"]
     __Time__ = [":"]
     __year__ = ["году"]
-    __day__ = ["завтра", "послезавтра"]
+    __day__ = ["послезавтра", "завтра"]
     __through__ = ["через"]
 
-    for i in __week__:
+    for i in week__:
         if i in str:
             return str[:str.find(i) - 3]
 
-    for i in __month__:
+    for i in month__:
         if i in str:
             return str[:str.find(i) - 3]
 
@@ -102,9 +103,10 @@ def Text(str):
             MESSAGE['DATE']['day_of_week'] = "Воскресенье"
         return str[:]
 
-def through(list):
+
+def through(still):
     global now
-    if len(list)==1:
+    if len(list) == 1:
         if list[0] == "год":
             now += timedelta(days=365)
         elif list[0] == "месяц":
@@ -146,6 +148,7 @@ def through(list):
     elif list[1] == "минуты":
         now += timedelta(minutes=int(list[0]))
 
+
 def timeforthrough(argnow):
     MESSAGE['DATE']['year'] = argnow.year
     MESSAGE['DATE']['month'] = argnow.month
@@ -153,48 +156,50 @@ def timeforthrough(argnow):
     MESSAGE['DATE']['hour'] = argnow.hour
     MESSAGE['DATE']['minute'] = argnow.minute
 
+
 def verifier_time():
     global MESSAGE
-    Enter_time = datetime(int(MESSAGE['DATE']['year']),int(MESSAGE['DATE']['month']),int(MESSAGE['DATE']['day']),int(MESSAGE['DATE']['hour']),int(MESSAGE['DATE']['minute']))
+    Enter_time = datetime(int(MESSAGE['DATE']['year']), int(MESSAGE['DATE']['month']), int(MESSAGE['DATE']['day']), int(MESSAGE['DATE']['hour']), int(MESSAGE['DATE']['minute']))
 
     if Enter_time >= datetime.now():
         return True
     else:
         return False
 
+
 try:
     string = input()
-    MESSAGE = {'STATUS': None,'TEXT': None, 'DATE': {'year': None, 'month': None, 'day': None}}
-                                                     #'hour': None, 'minute': None}}
+    MESSAGE = {'STATUS': None, 'TEXT': None, 'DATE': {'year': None, 'month': None, 'day': None}}
+    # 'hour': None, 'minute': None}}
 
     if "понедельник" in string:
         MESSAGE['DATE']['day_of_week'] = "Понедельник"
-        Data.time(string)
+        time(string)
     elif "вторник" in string:
         MESSAGE['DATE']['day_of_week'] = "Вторник"
-        Data.time(string)
+        time(string)
     elif "среду" in string:
         MESSAGE['DATE']['day_of_week'] = "Среда"
-        Data.time(string)
+        time(string)
     elif "четверг" in string:
         MESSAGE['DATE']['day_of_week'] = "Четверг"
-        Data.time(string)
+        time(string)
     elif "пятницу" in string:
         MESSAGE['DATE']['day_of_week'] = "Пятница"
-        Data.time(string)
+        time(string)
     elif "субботу" in string:
         MESSAGE['DATE']['day_of_week'] = "Суббота"
-        Data.time(string)
+        time(string)
     elif "воскресенье" in string:
         MESSAGE['DATE']['day_of_week'] = "Воскресенье"
-        Data.time(string)
+        time(string)
     else:
-        MESSAGE['DATE']['year'] = Data.year(string)
-        MESSAGE['DATE']['month'] = Data.month(string)
-        MESSAGE['DATE']['day'] = Data.day(string)
-        Data.time(string)
+        MESSAGE['DATE']['year'] = year(string)
+        MESSAGE['DATE']['month'] = month(string)
+        MESSAGE['DATE']['day'] = day(string)
+        time(string)
 
-    if "завтра"  in string:
+    if "завтра" in string:
         MESSAGE['DATE']['day_of_week'] = current_datetime.weekday() + 1
         if current_datetime.weekday() + 1 == 1:
             MESSAGE['DATE']['day_of_week'] = "Вторник"
@@ -229,9 +234,9 @@ try:
 
     MESSAGE['TEXT'] = Text(string)
     MESSAGE['STATUS'] = 'SUCCESS'
-    MESSAGE['DATE']['year'] = Data.year(string)
-    MESSAGE['DATE']['month'] = Data.month(string)
-    MESSAGE['DATE']['day'] = Data.day(string)
+    MESSAGE['DATE']['year'] = year(string)
+    MESSAGE['DATE']['month'] = month(string)
+    MESSAGE['DATE']['day'] = day(string)
     if "послезавтра" in string:
         now += timedelta(days=2)
         MESSAGE['DATE']['day'] = now.strftime("%d")
