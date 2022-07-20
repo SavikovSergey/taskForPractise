@@ -14,29 +14,29 @@ month__ = ["января", "февраля", "марта", "апреля", "ма
                "октября", "ноября", "декабря", ]
 week__ = ["понедельник", "вторник", "среду", "четверг", "пятницу", "субботу", "воскресенье"]
 
-def year(c: str):
+def year(str):
     text = ["года", "году"]
     for i in text:
-        if i in c:
-            return c[c.find(i) - 5:c.find(i) - 1]
+        if i in str:
+            return str[str.find(i) - 5:str.find(i) - 1]
     else:
         return None
 
-def month(a: str):
+def month(str):
     for i in month__:
-        if i in a:
+        if i in str:
             return month__.index(i) + 1
     else:
         return None
 
 
-def day(b: str):
+def day(str):
     for i in month__:
-        if i in b:
-            if b[b.find(i) - 3].isdigit():
-                return b[b.find(i) - 3: b.find(i) - 1]
+        if i in str:
+            if str[str.find(i) - 3].isdigit():
+                return str[str.find(i) - 3: str.find(i) - 1]
             else:
-                return b[b.find(i) - 2: b.find(i) - 1]
+                return str[str.find(i) - 2: str.find(i) - 1]
     return None
 
 
@@ -58,32 +58,32 @@ def time(d: str):
         MESSAGE['DATE']['minute'] = current_minute
 
 
-def Text(f: str):
+def Text(str):
     __Time__ = [":"]
     __year__ = ["году"]
     __day__ = ["послезавтра", "завтра"]
     __through__ = ["через"]
 
     for i in week__:
-        if i in f:
-            return f[:f.find(i) - 3]
+        if i in str:
+            return str[:str.find(i) - 3]
 
     for i in month__:
-        if i in f:
-            return f[:f.find(i) - 3]
+        if i in str:
+            return str[:str.find(i) - 3]
 
     for i in __Time__:
-        if i in f:
-            return f[:f.find(i) - 5]
+        if i in str:
+            return str[:str.find(i) - 5]
     for i in __year__:
-        if i in f:
-            return f[:f.find(i) - 8]
+        if i in str:
+            return str[:str.find(i) - 8]
     for i in __day__:
-        if i in f:
-            return f[:f.find(i) - 1]
+        if i in str:
+            return str[:str.find(i) - 1]
     for i in __through__:
-        if i in f:
-            return f[:f.find(i) - 1]
+        if i in str:
+            return str[:str.find(i) - 1]
     else:
         MESSAGE['DATE']['day_of_week'] = current_datetime.weekday() + 1
         if current_datetime.weekday() + 1 == 1:
@@ -100,10 +100,10 @@ def Text(f: str):
             MESSAGE['DATE']['day_of_week'] = "Суббота"
         elif current_datetime.weekday() + 1 == 7:
             MESSAGE['DATE']['day_of_week'] = "Воскресенье"
-        return f[:]
+        return str[:]
 
 
-def through(sender):
+def through(still):
     global now
     if len(list) == 1:
         if list[0] == "год":
@@ -164,9 +164,11 @@ def verifier_time():
         return True
     else:
         return False
+
+
 try:
     string = input()
-    MESSAGE = {'STATUS': None, 'DATE': {}}
+    MESSAGE = {'STATUS': None, 'TEXT': None, 'DATE': {'year': None, 'month': None, 'day': None}}
     # 'hour': None, 'minute': None}}
 
     if "понедельник" in string:
@@ -259,7 +261,7 @@ try:
     if not verifier_time():
         MESSAGE['DATE']['day'] += 1
     print(MESSAGE)
-except Exception as g:
+except Exception as e:
     MESSAGE['STATUS'] = 'ERROR'
-    MESSAGE['TEXT'] = g
+    MESSAGE['TEXT'] = e
     print(MESSAGE)
