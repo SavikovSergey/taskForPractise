@@ -159,7 +159,6 @@ def timeforthrough(argnow):
 def verifier_time():
     global MESSAGE
     Enter_time = datetime(int(MESSAGE['DATE']['year']), int(MESSAGE['DATE']['month']), int(MESSAGE['DATE']['day']), int(MESSAGE['DATE']['hour']), int(MESSAGE['DATE']['minute']))
-
     if Enter_time >= datetime.now():
         return True
     else:
@@ -231,9 +230,6 @@ try:
 
     MESSAGE['TEXT'] = Text(string)
     MESSAGE['STATUS'] = 'SUCCESS'
-    MESSAGE['DATE']['year'] = year(string)
-    MESSAGE['DATE']['month']= month(string)
-    MESSAGE['DATE']['day']= day(string)
 
     if "послезавтра" in string:
         now += timedelta(days=2)
@@ -243,8 +239,8 @@ try:
         MESSAGE['DATE']['day'] = now.strftime("%d")
 
     if "через" in string:
-        str = string[string.rfind("через") + 6:]
-        list = str.split(" ")
+        strg = string[string.rfind("через") + 6:]
+        list = strg.split(" ")
         now = datetime.now()
         while list:
             through(list[:2])
@@ -260,7 +256,7 @@ try:
     if not verifier_time():
         MESSAGE['DATE']['day'] += 1
     print(MESSAGE)
-except Exception as g:
+except Exception as type_error:
     MESSAGE['STATUS'] = 'ERROR'
-    MESSAGE['TEXT'] = g
+    MESSAGE['TEXT'] = type_error
     print(MESSAGE)
